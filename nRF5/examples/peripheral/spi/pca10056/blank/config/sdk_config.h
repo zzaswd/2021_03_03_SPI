@@ -4490,3 +4490,7 @@
 // <<< end of configuration section >>>
 #endif //SDK_CONFIG_H
 
+#ifndef RETARGET_ENABLED
+#define RETARGET_ENABLED 1
+#endif
+

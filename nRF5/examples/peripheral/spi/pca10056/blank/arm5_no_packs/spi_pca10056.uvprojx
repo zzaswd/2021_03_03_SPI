@@ -384,34 +384,34 @@
           <GroupName>Application</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\main.c</FilePath>
-            </File>
-            <File>
               <FileName>sdk_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\config\sdk_config.h</FilePath>
             </File>
             <File>
-              <FileName>ad5940.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\..\ad5940-examples\examples\ad5940lib\ad5940.c</FilePath>
-            </File>
-            <File>
-              <FileName>AD5940Main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\..\ad5940-examples\examples\AD5940_Ramp\AD5940Main.c</FilePath>
-            </File>
-            <File>
-              <FileName>RampTest.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\..\ad5940-examples\examples\AD5940_Ramp\RampTest.c</FilePath>
-            </File>
-            <File>
               <FileName>ADICUP3029Port.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\adicuplib\ADICUP3029Port.c</FilePath>
+            </File>
+            <File>
+              <FileName>AD5940_SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adicuplib\AD5940_SPI.c</FilePath>
+            </File>
+            <File>
+              <FileName>ad5940.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adicuplib\ad5940.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adicuplib\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adicuplib\retarget.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -40,7 +40,21 @@ static const uint8_t m_length = sizeof(m_tx_buf);        /**< Transfer length. *
 
     
 
-#define AD5940SPI                          NRF_SPI1
+#define AD5940SPI                          NRF_SPI
+
+
+void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
+                       void *                    p_context)
+{
+    spi_xfer_done = true;
+    NRF_LOG_INFO("Transfer completed.");
+    if (m_rx_buf[0] != 0)
+    {
+        NRF_LOG_INFO(" Received:");
+        NRF_LOG_HEXDUMP_INFO(m_rx_buf, strlen((const char *)m_rx_buf));
+    }
+}
+/*
 #define AD5940_CLK_ENABLE()                __HAL_RCC_SPI1_CLK_ENABLE()
 #define AD5940_SCK_GPIO_CLK_ENABLE()       spi_config.sck_pin
 #define AD5940_MISO_GPIO_CLK_ENABLE()      spi_config.miso_pin
@@ -51,6 +65,7 @@ static const uint8_t m_length = sizeof(m_tx_buf);        /**< Transfer length. *
 
 #define AD5940SPI_FORCE_RESET()               __HAL_RCC_SPI1_FORCE_RESET()
 #define AD5940SPI_RELEASE_RESET()             __HAL_RCC_SPI1_RELEASE_RESET()
+*/
 
 /* Definition for AD5940 Pins */
 /*
@@ -151,23 +166,31 @@ uint32_t AD5940_ClrMCUIntFlag(void)
 
 uint32_t AD5940_MCUResourceInit(void *pCfg)
 {
+	
   nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
                 spi_config.ss_pin   = SPI_SS_PIN;
                 spi_config.miso_pin = SPI_MISO_PIN;
                 spi_config.mosi_pin = SPI_MOSI_PIN;
                 spi_config.sck_pin  = SPI_SCK_PIN;
 	
+	
+	APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
+
+	
 	            
  
 	
   /* Step1, initialize SPI peripheral and its GPIOs for CS/RST */
-  AD5940_SCK_GPIO_CLK_ENABLE();
+  /*
+	AD5940_SCK_GPIO_CLK_ENABLE();
   AD5940_MISO_GPIO_CLK_ENABLE();
   AD5940_MOSI_GPIO_CLK_ENABLE();
   AD5940_CS_GPIO_CLK_ENABLE();
   AD5940_RST_GPIO_CLK_ENABLE();
-  /* Enable SPI clock */
-  AD5940_CLK_ENABLE(); 
+  */
+	/* Enable SPI clock */
+  /*
+	AD5940_CLK_ENABLE(); 
   
   GPIO_InitStruct.Pin       = AD5940_SCK_PIN;
   GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
@@ -175,30 +198,37 @@ uint32_t AD5940_MCUResourceInit(void *pCfg)
   GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = AD5940_SCK_AF;
   HAL_GPIO_Init(AD5940_SCK_GPIO_PORT, &GPIO_InitStruct);
+  */
   
-  /* SPI MISO GPIO pin configuration  */
-  GPIO_InitStruct.Pin = AD5940_MISO_PIN;
+	/* SPI MISO GPIO pin configuration  */
+  /*
+	GPIO_InitStruct.Pin = AD5940_MISO_PIN;
   GPIO_InitStruct.Alternate = AD5940_MISO_AF;
   HAL_GPIO_Init(AD5940_MISO_GPIO_PORT, &GPIO_InitStruct);
-  
+  */
   /* SPI MOSI GPIO pin configuration  */
-  GPIO_InitStruct.Pin = AD5940_MOSI_PIN;
+ /*
+	GPIO_InitStruct.Pin = AD5940_MOSI_PIN;
   GPIO_InitStruct.Alternate = AD5940_MOSI_AF;
   HAL_GPIO_Init(AD5940_MOSI_GPIO_PORT, &GPIO_InitStruct);
-  /* SPI CS GPIO pin configuration  */
-  GPIO_InitStruct.Pin = AD5940_CS_PIN;
+  */
+	/* SPI CS GPIO pin configuration  */
+  /*
+	GPIO_InitStruct.Pin = AD5940_CS_PIN;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   HAL_GPIO_Init(AD5940_CS_GPIO_PORT, &GPIO_InitStruct);
-  
+  */
   /* SPI RST GPIO pin configuration  */
-  GPIO_InitStruct.Pin = AD5940_RST_PIN;
+  /*
+	GPIO_InitStruct.Pin = AD5940_RST_PIN;
   HAL_GPIO_Init(AD5940_RST_GPIO_PORT, &GPIO_InitStruct);
   
   AD5940_CsSet();
   AD5940_RstSet();
-  
+  */
   /* Set the SPI parameters */
-  SpiHandle.Instance               = AD5940SPI;
+  /*
+	SpiHandle.Instance               = AD5940SPI;
   SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8; //SPI clock should be < AD5940_SystemClock
   SpiHandle.Init.Direction         = SPI_DIRECTION_2LINES;
   SpiHandle.Init.CLKPhase          = SPI_PHASE_1EDGE;
@@ -211,27 +241,33 @@ uint32_t AD5940_MCUResourceInit(void *pCfg)
   SpiHandle.Init.NSS               = SPI_NSS_SOFT;
   SpiHandle.Init.Mode = SPI_MODE_MASTER;
   HAL_SPI_Init(&SpiHandle);
-  
+  */
+	
   /* Step 2: Configure external interrupot line */
-  AD5940_GP0INT_GPIO_CLK_ENABLE();
+  /*
+	AD5940_GP0INT_GPIO_CLK_ENABLE();
   GPIO_InitStruct.Pin       = AD5940_GP0INT_PIN;
   GPIO_InitStruct.Mode      = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull      = GPIO_PULLUP;
   GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = 0;
   HAL_GPIO_Init(AD5940_GP0INT_GPIO_PORT, &GPIO_InitStruct);
-  
+  */
   /* Enable and set EXTI Line0 Interrupt to the lowest priority */
-  HAL_NVIC_EnableIRQ(AD5940_GP0INT_IRQn);
+  //HAL_NVIC_EnableIRQ(AD5940_GP0INT_IRQn);
 //  HAL_NVIC_SetPriority(AD5940_GP0INT_IRQn, 0, 0);
   return 0;
 }
 
 /* MCU related external line interrupt service routine */
-void Ext_Int0_Handler()
-{
-   pADI_XINT0->CLR = BITM_XINT_CLR_IRQ0;
-   ucInterrupted = 1;
-  /* This example just set the flag and deal with interrupt in AD5940Main function. It's your choice to choose how to process interrupt. */
-}
+
+//void Ext_Int0_Handler()
+//{
+//  pADI_XINT0->CLR = BITM_XINT_CLR_IRQ0;
+//  ucInterrupted = 1;
+ /* This example just set the flag and deal with interrupt in AD5940Main function. It's your choice to choose how to process interrupt. */
+//}
+
+
+
 

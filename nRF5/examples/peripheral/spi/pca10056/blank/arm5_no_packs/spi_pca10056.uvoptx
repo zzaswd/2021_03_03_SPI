@@ -190,18 +190,6 @@
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>1</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\main.c</PathWithFileName>
-      <FilenameWithoutPath>main.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>2</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -213,13 +201,25 @@
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>3</FileNumber>
+      <FileNumber>2</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\..\ad5940-examples\examples\ad5940lib\ad5940.c</PathWithFileName>
-      <FilenameWithoutPath>ad5940.c</FilenameWithoutPath>
+      <PathWithFileName>.\adicuplib\ADICUP3029Port.c</PathWithFileName>
+      <FilenameWithoutPath>ADICUP3029Port.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>3</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>1</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\adicuplib\AD5940_SPI.c</PathWithFileName>
+      <FilenameWithoutPath>AD5940_SPI.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -227,11 +227,11 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>4</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\..\ad5940-examples\examples\AD5940_Ramp\AD5940Main.c</PathWithFileName>
-      <FilenameWithoutPath>AD5940Main.c</FilenameWithoutPath>
+      <PathWithFileName>.\adicuplib\ad5940.c</PathWithFileName>
+      <FilenameWithoutPath>ad5940.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -242,8 +242,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\..\ad5940-examples\examples\AD5940_Ramp\RampTest.c</PathWithFileName>
-      <FilenameWithoutPath>RampTest.c</FilenameWithoutPath>
+      <PathWithFileName>.\adicuplib\main.c</PathWithFileName>
+      <FilenameWithoutPath>main.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -254,8 +254,8 @@
       <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\adicuplib\ADICUP3029Port.c</PathWithFileName>
-      <FilenameWithoutPath>ADICUP3029Port.c</FilenameWithoutPath>
+      <PathWithFileName>.\adicuplib\retarget.c</PathWithFileName>
+      <FilenameWithoutPath>retarget.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

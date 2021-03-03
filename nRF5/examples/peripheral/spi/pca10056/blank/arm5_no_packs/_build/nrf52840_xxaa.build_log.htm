@@ -21,101 +21,20 @@ Target DLL:      Segger\JL2CM3.dll V2.99.38.0
 Dialog DLL:      TCM.DLL V1.46.0.0
  
 <h2>Project:</h2>
-C:\Users\user\Desktop\nRF5\examples\peripheral\spi\pca10056\blank\arm5_no_packs\spi_pca10056.uvprojx
-Project File Date:  02/08/2021
+C:\Users\user\Documents\GitHub\0303NRF\2021_03_03_SPI\nRF5\examples\peripheral\spi\pca10056\blank\arm5_no_packs\spi_pca10056.uvprojx
+Project File Date:  03/03/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'nrf52840_xxaa'
-compiling boards.c...
-compiling main.c...
-compiling ADICUP3029Port.c...
-adicuplib\ADICUP3029Port.c(164): warning:  #174-D: expression has no effect
-    AD5940_SCK_GPIO_CLK_ENABLE();
-adicuplib\ADICUP3029Port.c(165): warning:  #174-D: expression has no effect
-    AD5940_MISO_GPIO_CLK_ENABLE();
-adicuplib\ADICUP3029Port.c(166): warning:  #174-D: expression has no effect
-    AD5940_MOSI_GPIO_CLK_ENABLE();
-adicuplib\ADICUP3029Port.c(167): warning:  #174-D: expression has no effect
-    AD5940_CS_GPIO_CLK_ENABLE();
-adicuplib\ADICUP3029Port.c(168): warning:  #223-D: function "__HAL_RCC_GPIOB_CLK_ENABLE" declared implicitly
-    AD5940_RST_GPIO_CLK_ENABLE();
-adicuplib\ADICUP3029Port.c(170): warning:  #223-D: function "__HAL_RCC_SPI1_CLK_ENABLE" declared implicitly
-    AD5940_CLK_ENABLE(); 
-adicuplib\ADICUP3029Port.c(172): error:  #20: identifier "GPIO_InitStruct" is undefined
-    GPIO_InitStruct.Pin       = AD5940_SCK_PIN;
-adicuplib\ADICUP3029Port.c(172): error:  #20: identifier "AD5940_SCK_PIN" is undefined
-    GPIO_InitStruct.Pin       = AD5940_SCK_PIN;
-adicuplib\ADICUP3029Port.c(173): error:  #20: identifier "GPIO_MODE_AF_PP" is undefined
-    GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
-adicuplib\ADICUP3029Port.c(174): error:  #20: identifier "GPIO_PULLDOWN" is undefined
-    GPIO_InitStruct.Pull      = GPIO_PULLDOWN;
-adicuplib\ADICUP3029Port.c(175): error:  #20: identifier "GPIO_SPEED_FREQ_VERY_HIGH" is undefined
-    GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-adicuplib\ADICUP3029Port.c(176): error:  #20: identifier "AD5940_SCK_AF" is undefined
-    GPIO_InitStruct.Alternate = AD5940_SCK_AF;
-adicuplib\ADICUP3029Port.c(177): warning:  #223-D: function "HAL_GPIO_Init" declared implicitly
-    HAL_GPIO_Init(AD5940_SCK_GPIO_PORT, &GPIO_InitStruct);
-adicuplib\ADICUP3029Port.c(177): error:  #20: identifier "AD5940_SCK_GPIO_PORT" is undefined
-    HAL_GPIO_Init(AD5940_SCK_GPIO_PORT, &GPIO_InitStruct);
-adicuplib\ADICUP3029Port.c(180): error:  #20: identifier "AD5940_MISO_PIN" is undefined
-    GPIO_InitStruct.Pin = AD5940_MISO_PIN;
-adicuplib\ADICUP3029Port.c(181): error:  #20: identifier "AD5940_MISO_AF" is undefined
-    GPIO_InitStruct.Alternate = AD5940_MISO_AF;
-adicuplib\ADICUP3029Port.c(182): error:  #20: identifier "AD5940_MISO_GPIO_PORT" is undefined
-    HAL_GPIO_Init(AD5940_MISO_GPIO_PORT, &GPIO_InitStruct);
-adicuplib\ADICUP3029Port.c(185): error:  #20: identifier "AD5940_MOSI_PIN" is undefined
-    GPIO_InitStruct.Pin = AD5940_MOSI_PIN;
-adicuplib\ADICUP3029Port.c(186): error:  #20: identifier "AD5940_MOSI_AF" is undefined
-    GPIO_InitStruct.Alternate = AD5940_MOSI_AF;
-adicuplib\ADICUP3029Port.c(187): error:  #20: identifier "AD5940_MOSI_GPIO_PORT" is undefined
-    HAL_GPIO_Init(AD5940_MOSI_GPIO_PORT, &GPIO_InitStruct);
-adicuplib\ADICUP3029Port.c(189): error:  #20: identifier "AD5940_CS_PIN" is undefined
-    GPIO_InitStruct.Pin = AD5940_CS_PIN;
-adicuplib\ADICUP3029Port.c(190): error:  #20: identifier "GPIO_MODE_OUTPUT_PP" is undefined
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-adicuplib\ADICUP3029Port.c(191): error:  #20: identifier "AD5940_CS_GPIO_PORT" is undefined
-    HAL_GPIO_Init(AD5940_CS_GPIO_PORT, &GPIO_InitStruct);
-adicuplib\ADICUP3029Port.c(194): error:  #20: identifier "AD5940_RST_PIN" is undefined
-    GPIO_InitStruct.Pin = AD5940_RST_PIN;
-adicuplib\ADICUP3029Port.c(195): error:  #20: identifier "AD5940_RST_GPIO_PORT" is undefined
-    HAL_GPIO_Init(AD5940_RST_GPIO_PORT, &GPIO_InitStruct);
-adicuplib\ADICUP3029Port.c(201): error:  #20: identifier "SpiHandle" is undefined
-    SpiHandle.Instance               = AD5940SPI;
-adicuplib\ADICUP3029Port.c(202): error:  #20: identifier "SPI_BAUDRATEPRESCALER_8" is undefined
-    SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8; //SPI clock should be < AD5940_SystemClock
-adicuplib\ADICUP3029Port.c(203): error:  #20: identifier "SPI_DIRECTION_2LINES" is undefined
-    SpiHandle.Init.Direction         = SPI_DIRECTION_2LINES;
-adicuplib\ADICUP3029Port.c(204): error:  #20: identifier "SPI_PHASE_1EDGE" is undefined
-    SpiHandle.Init.CLKPhase          = SPI_PHASE_1EDGE;
-adicuplib\ADICUP3029Port.c(205): error:  #20: identifier "SPI_POLARITY_LOW" is undefined
-    SpiHandle.Init.CLKPolarity       = SPI_POLARITY_LOW;
-adicuplib\ADICUP3029Port.c(206): error:  #20: identifier "SPI_DATASIZE_8BIT" is undefined
-    SpiHandle.Init.DataSize          = SPI_DATASIZE_8BIT;
-adicuplib\ADICUP3029Port.c(207): error:  #20: identifier "SPI_FIRSTBIT_MSB" is undefined
-    SpiHandle.Init.FirstBit          = SPI_FIRSTBIT_MSB;
-adicuplib\ADICUP3029Port.c(208): error:  #20: identifier "SPI_TIMODE_DISABLE" is undefined
-    SpiHandle.Init.TIMode            = SPI_TIMODE_DISABLE;
-adicuplib\ADICUP3029Port.c(209): error:  #20: identifier "SPI_CRCCALCULATION_DISABLE" is undefined
-    SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;
-adicuplib\ADICUP3029Port.c(211): error:  #20: identifier "SPI_NSS_SOFT" is undefined
-    SpiHandle.Init.NSS               = SPI_NSS_SOFT;
-adicuplib\ADICUP3029Port.c(212): error:  #20: identifier "SPI_MODE_MASTER" is undefined
-    SpiHandle.Init.Mode = SPI_MODE_MASTER;
-adicuplib\ADICUP3029Port.c(213): warning:  #223-D: function "HAL_SPI_Init" declared implicitly
-    HAL_SPI_Init(&SpiHandle);
-adicuplib\ADICUP3029Port.c(216): warning:  #223-D: function "__HAL_RCC_GPIOA_CLK_ENABLE" declared implicitly
-    AD5940_GP0INT_GPIO_CLK_ENABLE();
-adicuplib\ADICUP3029Port.c(217): error:  #20: identifier "AD5940_GP0INT_PIN" is undefined
-    GPIO_InitStruct.Pin       = AD5940_GP0INT_PIN;
-adicuplib\ADICUP3029Port.c: 9 warnings, 30 errors
-compiling bsp.c...
-compiling nrfx_gpiote.c...
-compiling nrfx_spim.c...
-compiling nrfx_uart.c...
-compiling nrfx_uarte.c...
-compiling app_button.c...
-".\_build\nrf52840_xxaa.axf" - 30 Error(s), 9 Warning(s).
+compiling retarget.c...
+linking...
+.\_build\nrf52840_xxaa.axf: Error: L6218E: Undefined symbol app_uart_get (referred from retarget.o).
+.\_build\nrf52840_xxaa.axf: Error: L6218E: Undefined symbol app_uart_put (referred from retarget.o).
+Not enough information to list image symbols.
+Not enough information to list load addresses in the image map.
+Finished: 2 information, 0 warning and 2 error messages.
+".\_build\nrf52840_xxaa.axf" - 2 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -141,12 +60,12 @@ Package Vendor: NordicSemiconductor
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: NordicSemiconductor::Device:Startup:8.35.0
+      Source file:   Device\Source\arm\arm_startup_nrf52840.s
       Include file:  Device\Include\system_nrf52840.h
       Include file:  Device\Include\system_nrf.h
       Source file:   Device\Source\system_nrf52840.c
-      Source file:   Device\Source\arm\arm_startup_nrf52840.s
 Target not created.
-Build Time Elapsed:  00:00:27
+Build Time Elapsed:  00:00:07
 </pre>
 </body>
 </html>
