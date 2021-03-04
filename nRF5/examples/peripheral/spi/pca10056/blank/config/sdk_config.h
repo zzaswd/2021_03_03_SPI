@@ -105,7 +105,7 @@
 // <4294967295=> Not connected 
 
 #ifndef SPI_SCK_PIN
-#define SPI_SCK_PIN 26
+#define SPI_SCK_PIN 23
 #endif
 
 // <o> SPI_MISO_PIN  - Pin number
@@ -161,7 +161,7 @@
 // <4294967295=> Not connected 
 
 #ifndef SPI_MISO_PIN
-#define SPI_MISO_PIN 30
+#define SPI_MISO_PIN 22
 #endif
 
 // <o> SPI_MOSI_PIN  - Pin number
@@ -217,7 +217,7 @@
 // <4294967295=> Not connected 
 
 #ifndef SPI_MOSI_PIN
-#define SPI_MOSI_PIN 29
+#define SPI_MOSI_PIN 21
 #endif
 
 // <o> SPI_SS_PIN  - Pin number
@@ -273,7 +273,7 @@
 // <4294967295=> Not connected 
 
 #ifndef SPI_SS_PIN
-#define SPI_SS_PIN 31
+#define SPI_SS_PIN 20
 #endif
 
 // <o> SPI_IRQ_PRIORITY  - Interrupt priority

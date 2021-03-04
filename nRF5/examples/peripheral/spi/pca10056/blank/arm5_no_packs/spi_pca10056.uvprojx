@@ -384,11 +384,6 @@
           <GroupName>Application</GroupName>
           <Files>
             <File>
-              <FileName>sdk_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\config\sdk_config.h</FilePath>
-            </File>
-            <File>
               <FileName>ADICUP3029Port.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\adicuplib\ADICUP3029Port.c</FilePath>
@@ -407,11 +402,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\adicuplib\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>retarget.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\adicuplib\retarget.c</FilePath>
             </File>
           </Files>
         </Group>
