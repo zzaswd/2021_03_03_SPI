@@ -41,6 +41,17 @@ static const uint8_t m_length = sizeof(m_tx_buf);        /**< Transfer length. *
     
 
 #define AD5940SPI                          NRF_SPI
+#define AD5940_SCK_PIN                     SPI_SCK_PIN              
+#define AD5940_MISO_PIN                    SPI_MISO_PIN
+#define AD5940_MOSI_PIN                    SPI_MOSI_PIN
+
+#define AD5940_CS_PIN                      SPI_SS_PIN
+
+#define AD5940_RST_PIN                     SPI_RESET_PIN
+
+#define AD5940_GP0INT_PIN                  SPI_RX_PIN
+
+#define AD5940_GP0INT_IRQn                 SPI_IRQ_PRIORITY
 
 
 void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
@@ -65,29 +76,6 @@ void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
 
 #define AD5940SPI_FORCE_RESET()               __HAL_RCC_SPI1_FORCE_RESET()
 #define AD5940SPI_RELEASE_RESET()             __HAL_RCC_SPI1_RELEASE_RESET()
-*/
-
-/* Definition for AD5940 Pins */
-/*
-#define AD5940_SCK_PIN                     GPIO_PIN_5
-#define AD5940_SCK_GPIO_PORT               GPIOA
-#define AD5940_SCK_AF                      GPIO_AF5_SPI1
-#define AD5940_MISO_PIN                    GPIO_PIN_6
-#define AD5940_MISO_GPIO_PORT              GPIOA
-#define AD5940_MISO_AF                     GPIO_AF5_SPI1
-#define AD5940_MOSI_PIN                    GPIO_PIN_7
-#define AD5940_MOSI_GPIO_PORT              GPIOA
-#define AD5940_MOSI_AF                     GPIO_AF5_SPI1
-
-#define AD5940_CS_PIN                      GPIO_PIN_6
-#define AD5940_CS_GPIO_PORT                GPIOB
-
-#define AD5940_RST_PIN                     GPIO_PIN_0   //A3
-#define AD5940_RST_GPIO_PORT               GPIOB
-
-#define AD5940_GP0INT_PIN                  GPIO_PIN_10   //A3
-#define AD5940_GP0INT_GPIO_PORT            GPIOA
-#define AD5940_GP0INT_IRQn                 EXTI15_10_IRQn
 */
 
 
@@ -117,22 +105,22 @@ void AD5940_ReadWriteNBytes(unsigned char *pSendBuffer,unsigned char *pRecvBuff,
 
 void AD5940_CsClr(void)
 {
-      NRF_P0->OUTCLR = (1<<10);
+      nrf_gpio_pin_clear(AD5940_CS_PIN);
 }
 
 void AD5940_CsSet(void)
 {
-      NRF_P0->OUTSET = (1<<10); //p2.6-ADC3-A3
+      nrf_gpio_pin_set(AD5940_CS_PIN);
 }
 
 void AD5940_RstSet(void)
 {
-      NRF_P1->OUTSET = 1<<6;
+      nrf_gpio_pin_set(AD5940_RST_PIN);
 }
 
 void AD5940_RstClr(void)
 {
-      NRF_P1->OUTCLR = 1<<6;
+      nrf_gpio_pin_clear(AD5940_RST_PIN);
 }
 
 void AD5940_Delay10us(uint32_t time)
@@ -260,14 +248,16 @@ uint32_t AD5940_MCUResourceInit(void *pCfg)
 }
 
 /* MCU related external line interrupt service routine */
-
-//void Ext_Int0_Handler()
-//{
+//
+void Ext_Int0_Handler()
+{
+//	NRF_SPIS0
 //  pADI_XINT0->CLR = BITM_XINT_CLR_IRQ0;
 //  ucInterrupted = 1;
  /* This example just set the flag and deal with interrupt in AD5940Main function. It's your choice to choose how to process interrupt. */
-//}
-
+    nrfx_spim_0_irq_handler();
+	
+}
 
 
 

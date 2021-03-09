@@ -293,6 +293,14 @@
 #define SPI_IRQ_PRIORITY 6
 #endif
 
+#ifndef SPI_RESET_PIN
+#define SPI_RESET_PIN 29
+#endif
+
+#ifndef SPI_RX_PIN
+#define SPI_RX_PIN 13
+#endif
+
 // </h> 
 //==========================================================
 

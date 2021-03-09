@@ -1,8 +1,9 @@
 --cpu=Cortex-M4.fp.sp
 ".\_build\adicup3029port.o"
-".\_build\ad5940_spi.o"
 ".\_build\ad5940.o"
 ".\_build\main.o"
+".\_build\ad5940main.o"
+".\_build\amperometric.o"
 ".\_build\boards.o"
 ".\_build\bsp.o"
 ".\_build\nrf_drv_spi.o"

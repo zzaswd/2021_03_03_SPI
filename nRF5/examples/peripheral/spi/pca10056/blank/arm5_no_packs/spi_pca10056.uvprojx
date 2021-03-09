@@ -389,11 +389,6 @@
               <FilePath>.\adicuplib\ADICUP3029Port.c</FilePath>
             </File>
             <File>
-              <FileName>AD5940_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\adicuplib\AD5940_SPI.c</FilePath>
-            </File>
-            <File>
               <FileName>ad5940.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\adicuplib\ad5940.c</FilePath>
@@ -402,6 +397,16 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\adicuplib\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>AD5940Main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adicuplib\AD5940Main.c</FilePath>
+            </File>
+            <File>
+              <FileName>Amperometric.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adicuplib\Amperometric.c</FilePath>
             </File>
           </Files>
         </Group>
