@@ -16,7 +16,7 @@ Analog Devices Software License Agreement.
 #include "ad5940.h"
 #include <nrf52840.h>
 
-////////////////
+
 #include "nrf_drv_spi.h"
 #include "app_util_platform.h"
 #include "nrf_gpio.h"
@@ -28,7 +28,19 @@ Analog Devices Software License Agreement.
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
+#include "nrf_gpiote.h"
+#include "nrf_drv_ppi.h"
+#include "nrf_drv_timer.h"
+#include "nrf_drv_gpiote.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include "nrf.h"
+#include "nrf_drv_systick.h"
 
+
+
+
+#define HAL_MAX_DELAY      0xFFFFFFFFU
 #define SPI_INSTANCE  0 /**< SPI instance index. */
 static const nrf_drv_spi_t spi = NRF_DRV_SPI_INSTANCE(SPI_INSTANCE);  /**< SPI instance. */
 static volatile bool spi_xfer_done;  /**< Flag used to indicate that SPI instance completed the transfer. */
@@ -38,11 +50,12 @@ static uint8_t       m_tx_buf[] = TEST_STRING;           /**< TX buffer. */
 static uint8_t       m_rx_buf[sizeof(TEST_STRING) + 1];    /**< RX buffer. */
 static const uint8_t m_length = sizeof(m_tx_buf);        /**< Transfer length. */
 
+
     
 
-#define AD5940SPI                          NRF_SPI
-#define AD5940_SCK_PIN                     SPI_SCK_PIN              
+#define AD5940SPI                          NRF_SPIM0
 #define AD5940_MISO_PIN                    SPI_MISO_PIN
+
 #define AD5940_MOSI_PIN                    SPI_MOSI_PIN
 
 #define AD5940_CS_PIN                      SPI_SS_PIN
@@ -52,6 +65,8 @@ static const uint8_t m_length = sizeof(m_tx_buf);        /**< Transfer length. *
 #define AD5940_GP0INT_PIN                  SPI_RX_PIN
 
 #define AD5940_GP0INT_IRQn                 SPI_IRQ_PRIORITY
+
+
 
 
 void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
@@ -84,7 +99,7 @@ void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
 
 
 #define SYSTICK_MAXCOUNT ((1L<<24)-1) /* we use Systick to complete function Delay10uS(). This value only applies to ADICUP3029 board. */
-#define SYSTICK_CLKFREQ   26000000L   /* Systick clock frequency in Hz. This only appies to ADICUP3029 board */
+#define SYSTICK_CLKFREQ  100000000L    /* Systick clock frequency in Hz. This only appies to ADICUP3029 board */
 volatile static uint32_t ucInterrupted = 0;       /* Flag to indicate interrupt occurred */
 
 /**
@@ -114,28 +129,32 @@ void AD5940_CsSet(void)
 }
 
 void AD5940_RstSet(void)
-{
+{     
       nrf_gpio_pin_set(AD5940_RST_PIN);
 }
 
 void AD5940_RstClr(void)
-{
+{  
       nrf_gpio_pin_clear(AD5940_RST_PIN);
 }
 
 void AD5940_Delay10us(uint32_t time)
 {
-  if(time==0)return;
-  if(time*10<SYSTICK_MAXCOUNT/(SYSTICK_CLKFREQ/1000000)){
-    SysTick->LOAD = time*10*(SYSTICK_CLKFREQ/1000000);
-    SysTick->CTRL = (1 << 2) | (1<<0);    /* Enable SysTick Timer, using core clock */
-    while(!((SysTick->CTRL)&(1<<16)));    /* Wait until count to zero */
-    SysTick->CTRL = 0;                    /* Disable SysTick Timer */
+   time/=100;
+  if(time == 0) time =1;
+ 
+	uint32_t tickstart= nrf_systick_val_get();
+	uint32_t wait= time;
+	
+	 if (wait < HAL_MAX_DELAY)
+  {
+    wait += (uint32_t)(1U);
   }
-  else {
-    AD5940_Delay10us(time/2);
-    AD5940_Delay10us(time/2 + (time&1));
-  }
+
+  while((nrf_systick_val_get() - tickstart) < wait)
+  {
+  } 
+	
 }
 
 uint32_t AD5940_GetMCUIntFlag(void)
@@ -154,96 +173,32 @@ uint32_t AD5940_ClrMCUIntFlag(void)
 
 uint32_t AD5940_MCUResourceInit(void *pCfg)
 {
+	nrf_drv_gpiote_init();
+
+
+  nrf_gpio_cfg_output(SPI_SCK_PIN);
+	nrf_gpio_cfg_output(SPI_MISO_PIN);
+	nrf_gpio_cfg_output(SPI_MOSI_PIN);
+	nrf_gpio_cfg_output(SPI_SS_PIN);
+	nrf_gpio_cfg_output(SPI_RESET_PIN);
 	
-  nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
+	AD5940_CsSet();
+  AD5940_RstSet();
+    nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
                 spi_config.ss_pin   = SPI_SS_PIN;
                 spi_config.miso_pin = SPI_MISO_PIN;
                 spi_config.mosi_pin = SPI_MOSI_PIN;
                 spi_config.sck_pin  = SPI_SCK_PIN;
 	
-	
 	APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
 
 	
-	            
- 
+	nrf_gpio_cfg_input(AD5940_GP0INT_PIN, NRF_GPIO_PIN_NOPULL);
+  nrf_gpiote_event_configure(0,AD5940_GP0INT_PIN,NRF_GPIOTE_POLARITY_TOGGLE);
+	NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_IN0_Enabled;
+	NVIC_EnableIRQ(GPIOTE_IRQn);
 	
-  /* Step1, initialize SPI peripheral and its GPIOs for CS/RST */
-  /*
-	AD5940_SCK_GPIO_CLK_ENABLE();
-  AD5940_MISO_GPIO_CLK_ENABLE();
-  AD5940_MOSI_GPIO_CLK_ENABLE();
-  AD5940_CS_GPIO_CLK_ENABLE();
-  AD5940_RST_GPIO_CLK_ENABLE();
-  */
-	/* Enable SPI clock */
-  /*
-	AD5940_CLK_ENABLE(); 
-  
-  GPIO_InitStruct.Pin       = AD5940_SCK_PIN;
-  GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull      = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = AD5940_SCK_AF;
-  HAL_GPIO_Init(AD5940_SCK_GPIO_PORT, &GPIO_InitStruct);
-  */
-  
-	/* SPI MISO GPIO pin configuration  */
-  /*
-	GPIO_InitStruct.Pin = AD5940_MISO_PIN;
-  GPIO_InitStruct.Alternate = AD5940_MISO_AF;
-  HAL_GPIO_Init(AD5940_MISO_GPIO_PORT, &GPIO_InitStruct);
-  */
-  /* SPI MOSI GPIO pin configuration  */
- /*
-	GPIO_InitStruct.Pin = AD5940_MOSI_PIN;
-  GPIO_InitStruct.Alternate = AD5940_MOSI_AF;
-  HAL_GPIO_Init(AD5940_MOSI_GPIO_PORT, &GPIO_InitStruct);
-  */
-	/* SPI CS GPIO pin configuration  */
-  /*
-	GPIO_InitStruct.Pin = AD5940_CS_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  HAL_GPIO_Init(AD5940_CS_GPIO_PORT, &GPIO_InitStruct);
-  */
-  /* SPI RST GPIO pin configuration  */
-  /*
-	GPIO_InitStruct.Pin = AD5940_RST_PIN;
-  HAL_GPIO_Init(AD5940_RST_GPIO_PORT, &GPIO_InitStruct);
-  
-  AD5940_CsSet();
-  AD5940_RstSet();
-  */
-  /* Set the SPI parameters */
-  /*
-	SpiHandle.Instance               = AD5940SPI;
-  SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8; //SPI clock should be < AD5940_SystemClock
-  SpiHandle.Init.Direction         = SPI_DIRECTION_2LINES;
-  SpiHandle.Init.CLKPhase          = SPI_PHASE_1EDGE;
-  SpiHandle.Init.CLKPolarity       = SPI_POLARITY_LOW;
-  SpiHandle.Init.DataSize          = SPI_DATASIZE_8BIT;
-  SpiHandle.Init.FirstBit          = SPI_FIRSTBIT_MSB;
-  SpiHandle.Init.TIMode            = SPI_TIMODE_DISABLE;
-  SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;
-  SpiHandle.Init.CRCPolynomial     = 7;
-  SpiHandle.Init.NSS               = SPI_NSS_SOFT;
-  SpiHandle.Init.Mode = SPI_MODE_MASTER;
-  HAL_SPI_Init(&SpiHandle);
-  */
-	
-  /* Step 2: Configure external interrupot line */
-  /*
-	AD5940_GP0INT_GPIO_CLK_ENABLE();
-  GPIO_InitStruct.Pin       = AD5940_GP0INT_PIN;
-  GPIO_InitStruct.Mode      = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull      = GPIO_PULLUP;
-  GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = 0;
-  HAL_GPIO_Init(AD5940_GP0INT_GPIO_PORT, &GPIO_InitStruct);
-  */
-  /* Enable and set EXTI Line0 Interrupt to the lowest priority */
-  //HAL_NVIC_EnableIRQ(AD5940_GP0INT_IRQn);
-//  HAL_NVIC_SetPriority(AD5940_GP0INT_IRQn, 0, 0);
+
   return 0;
 }
 
@@ -253,11 +208,10 @@ void Ext_Int0_Handler()
 {
 //	NRF_SPIS0
 //  pADI_XINT0->CLR = BITM_XINT_CLR_IRQ0;
-//  ucInterrupted = 1;
+   ucInterrupted = 1;
  /* This example just set the flag and deal with interrupt in AD5940Main function. It's your choice to choose how to process interrupt. */
-    nrfx_spim_0_irq_handler();
-	
-}
+   NRF_GPIOTE->EVENTS_IN[0]=0;
 
+}
 
 
